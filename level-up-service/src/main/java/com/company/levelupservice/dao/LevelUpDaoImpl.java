@@ -23,7 +23,7 @@ public class LevelUpDaoImpl implements LevelUpDao {
             "SELECT * FROM level_up";
 
     private static final String UPDATE_LEVEL_UP_SQL =
-            "UPDATE level_up SET customer_id = ?, points = ?, member_date = ? WHERE level_up_id = ?)";
+            "UPDATE level_up SET customer_id = ?, points = ?, member_date = ? WHERE level_up_id = ?";
 
     private static final String DELETE_LEVEL_UP_SQL =
             "DELETE FROM level_up WHERE level_up_id = ?";

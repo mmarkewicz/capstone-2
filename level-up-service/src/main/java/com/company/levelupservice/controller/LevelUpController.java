@@ -14,27 +14,27 @@ public class LevelUpController {
     LevelUpServiceLayer service;
 
     @GetMapping("/levelups")
-    public List<LevelUp> getAllLevelUps() {
+    public List<LevelUp> getAllLevelUps() throws Exception {
         return service.getAllLevelUps();
     }
 
     @GetMapping("/levelup/{id}")
-    public LevelUp getLevelUp(@PathVariable int id) {
+    public LevelUp getLevelUp(@PathVariable int id) throws Exception {
         return service.getLevelUpById(id);
     }
 
     @PostMapping("/levelups")
-    public LevelUp postLevelUp(@RequestBody LevelUp levelUp) {
+    public LevelUp postLevelUp(@RequestBody LevelUp levelUp) throws Exception {
         return service.addLevelUp(levelUp);
     }
 
     @PutMapping("/levelups")
-    public void putLevelUp(@RequestBody LevelUp levelUp) {
+    public void putLevelUp(@RequestBody LevelUp levelUp) throws Exception {
         service.updateLevelUp(levelUp);
     }
 
     @DeleteMapping("/levelup/{id}")
-    public void deleteLevelUp(@PathVariable int id) {
+    public void deleteLevelUp(@PathVariable int id) throws Exception {
         service.deleteLevelUp(id);
     }
 
