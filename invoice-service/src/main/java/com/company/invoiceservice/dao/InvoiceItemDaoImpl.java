@@ -1,12 +1,15 @@
 package com.company.invoiceservice.dao;
 
 import com.company.invoiceservice.model.InvoiceItem;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Repository
 public class InvoiceItemDaoImpl implements InvoiceItemDao {
 
     private static final String INSERT_INVOICE_ITEM_SQL =
@@ -29,6 +32,7 @@ public class InvoiceItemDaoImpl implements InvoiceItemDao {
 
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
     public InvoiceItemDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -65,7 +69,7 @@ public class InvoiceItemDaoImpl implements InvoiceItemDao {
 
     @Override
     public void updateInvoiceItem(InvoiceItem invoiceItem) {
-        jdbcTemplate.update(INSERT_INVOICE_ITEM_SQL,
+        jdbcTemplate.update(UPDATE_INVOICE_ITEM_SQL,
                 invoiceItem.getInvoiceId(),
                 invoiceItem.getInventory_id(),
                 invoiceItem.getQuantity(),
