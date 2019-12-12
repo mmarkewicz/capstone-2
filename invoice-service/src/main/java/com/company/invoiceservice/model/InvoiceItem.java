@@ -54,7 +54,7 @@ public class InvoiceItem {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof InvoiceItem)) return false;
         InvoiceItem that = (InvoiceItem) o;
         return id == that.id &&
                 invoiceId == that.invoiceId &&
@@ -68,4 +68,14 @@ public class InvoiceItem {
         return Objects.hash(id, invoiceId, inventory_id, quantity, unitPrice);
     }
 
+    @Override
+    public String toString() {
+        return "InvoiceItem{" +
+                "id=" + id +
+                ", invoiceId=" + invoiceId +
+                ", inventory_id=" + inventory_id +
+                ", quantity=" + quantity +
+                ", unitPrice=" + unitPrice +
+                '}';
+    }
 }
