@@ -31,6 +31,7 @@ public class InvoiceServiceLayer {
                             List<InvoiceItem> invoiceItems = invoiceItemDao.getInvoiceItemsByInvoiceId(invoice.getId());
 
                             InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
+                            invoiceViewModel.setId(invoice.getId());
                             invoiceViewModel.setCustomerId(invoice.getCustomerId());
                             invoiceViewModel.setPurchaseDate(invoice.getPurchaseDate());
                             invoiceViewModel.setInvoiceItems(invoiceItems);
@@ -57,18 +58,18 @@ public class InvoiceServiceLayer {
     public List<InvoiceViewModel> getInvoicesByCustomerId(int customerId) {
         List<Invoice> invoiceList = invoiceDao.getInvoicesByCustomerId(customerId);
 
-        List<InvoiceViewModel> invoiceViewModels =  invoiceList.stream()
+        List<InvoiceViewModel> invoiceViewModels = invoiceList.stream()
                 .map(invoice -> {
-                            List<InvoiceItem> invoiceItems = invoiceItemDao.getInvoiceItemsByInvoiceId(invoice.getId());
+                    List<InvoiceItem> invoiceItems = invoiceItemDao.getInvoiceItemsByInvoiceId(invoice.getId());
 
-                            InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
-                            invoiceViewModel.setId(invoice.getId());
-                            invoiceViewModel.setCustomerId(invoice.getCustomerId());
-                            invoiceViewModel.setPurchaseDate(invoice.getPurchaseDate());
-                            invoiceViewModel.setInvoiceItems(invoiceItems);
+                    InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
+                    invoiceViewModel.setId(invoice.getId());
+                    invoiceViewModel.setCustomerId(invoice.getCustomerId());
+                    invoiceViewModel.setPurchaseDate(invoice.getPurchaseDate());
+                    invoiceViewModel.setInvoiceItems(invoiceItems);
 
-                            return invoiceViewModel;
-                        })
+                    return invoiceViewModel;
+                })
                 .collect(Collectors.toList());
 
         return invoiceViewModels;
@@ -84,11 +85,14 @@ public class InvoiceServiceLayer {
         invoiceViewModel.setId(invoiceId);
 
         List<InvoiceItem> invoiceItems = invoiceViewModel.getInvoiceItems();
-        invoiceItems.forEach(invoiceItem -> {
-            invoiceItem.setInvoiceId(invoiceId);
-            invoiceItemDao.addInvoiceItem(invoiceItem);
-        });
+        invoiceItems = invoiceItems.stream()
+                .map(invoiceItem -> {
+                    invoiceItem.setInvoiceId(invoiceId);
+                    invoiceItem = invoiceItemDao.addInvoiceItem(invoiceItem);
+                    return invoiceItem;
+                }).collect(Collectors.toList());
 
+        invoiceViewModel.setInvoiceItems(invoiceItems);
         return invoiceViewModel;
     }
 }

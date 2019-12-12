@@ -1,4 +1,4 @@
-package com.company.levelupservice.controller;
+package com.company.invoiceservice.controller;
 
 import org.springframework.hateoas.mediatype.vnderrors.VndErrors;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 
 @RestControllerAdvice
 @RequestMapping(produces = "application/vnd.error+json")
-public class LevelUpExceptionHandler {
+public class InvoiceControllerExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)

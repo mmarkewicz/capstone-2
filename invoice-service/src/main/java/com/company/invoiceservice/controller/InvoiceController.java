@@ -16,25 +16,25 @@ public class InvoiceController {
 
     @PostMapping("/invoices")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public InvoiceViewModel postInvoice(@RequestBody InvoiceViewModel invoiceViewModel) {
+    public InvoiceViewModel postInvoice(@RequestBody InvoiceViewModel invoiceViewModel) throws Exception {
         return service.addInvoice(invoiceViewModel);
     }
 
     @GetMapping("/invoices")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<InvoiceViewModel> getAllInvoices() {
+    public List<InvoiceViewModel> getAllInvoices() throws Exception {
         return service.getAllInvoices();
     }
 
     @GetMapping("/invoices/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public InvoiceViewModel getInvoiceById(@PathVariable int id) {
+    public InvoiceViewModel getInvoiceById(@PathVariable int id) throws Exception {
         return service.getInvoiceById(id);
     }
 
     @GetMapping("/invoices/customer/{customerId}")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<InvoiceViewModel> getInvoicesByCustomerId(@PathVariable int customerId) {
+    public List<InvoiceViewModel> getInvoicesByCustomerId(@PathVariable int customerId) throws Exception {
         return service.getInvoicesByCustomerId(customerId);
     }
 
