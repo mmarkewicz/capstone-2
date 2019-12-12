@@ -10,8 +10,12 @@ import java.util.List;
 @Service
 public class LevelUpServiceLayer {
 
-    @Autowired
     LevelUpDaoImpl dao;
+
+    @Autowired
+    public LevelUpServiceLayer(LevelUpDaoImpl dao) {
+        this.dao = dao;
+    }
 
     public List<LevelUp> getAllLevelUps() throws Exception {
         try {
