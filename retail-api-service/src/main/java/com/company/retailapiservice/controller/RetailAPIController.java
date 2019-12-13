@@ -1,6 +1,7 @@
 package com.company.retailapiservice.controller;
 
 import com.company.retailapiservice.model.InvoiceViewModel;
+import com.company.retailapiservice.model.InvoiceViewModelWithPoints;
 import com.company.retailapiservice.model.Product;
 import com.company.retailapiservice.service.RetailAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class RetailAPIController {
     RetailAPIService service;
 
     @PostMapping("/invoices")
-    public InvoiceViewModel submitInvoice(@RequestBody InvoiceViewModel invoiceViewModel) {
+    public InvoiceViewModelWithPoints submitInvoice(@RequestBody InvoiceViewModel invoiceViewModel) throws Exception {
         return service.addInvoice(invoiceViewModel);
     }
 
@@ -50,8 +51,8 @@ public class RetailAPIController {
     }
 
     @GetMapping(value = "/levelup/customer/{id}")
-    public int getLevelUpPointsByCustomerId(int id) {
-        return getLevelUpPointsByCustomerId(id);
+    public int getLevelUpPointsByCustomerId(@PathVariable int id) {
+        return service.getLevelUpPointsByCustomerId(id);
     }
 
 }
