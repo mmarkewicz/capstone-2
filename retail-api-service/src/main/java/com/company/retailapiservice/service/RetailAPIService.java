@@ -86,6 +86,16 @@ public class RetailAPIService {
         invoiceViewModelWithPoints.setPurchaseDate(invoiceViewModel.getPurchaseDate());
         invoiceViewModelWithPoints.setLevelUpPoints(points);
         invoiceViewModelWithPoints.setTotal(total);
+
+        // decrease number of products if successful order is placed
+        invoiceViewModel.getInvoiceItems().stream()
+                .forEach(invoiceItem -> {
+                    int numProducts = invoiceItem.getQuantity();
+                    Inventory inventory = inventoryFeign.getInventoryById(invoiceItem.getInventory_id());
+                    inventory.setQuantity(inventory.getQuantity() - numProducts);
+                    inventoryFeign.updateInventory(inventory);
+                });
+
         return invoiceViewModelWithPoints;
     }
 
