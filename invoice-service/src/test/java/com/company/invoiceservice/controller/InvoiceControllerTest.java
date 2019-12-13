@@ -111,7 +111,7 @@ public class InvoiceControllerTest {
         String responseJson = mapper.writeValueAsString(responseInvoiceViewModel);
 
         this.mockMvc.perform(post("/invoices")
-        .content(requestJson)
+                .content(requestJson)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8"))
@@ -179,5 +179,5 @@ public class InvoiceControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString(json)));
     }
-    // get /invoices/customer/{customerId}
+
 }

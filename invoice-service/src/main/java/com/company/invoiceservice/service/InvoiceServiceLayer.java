@@ -6,11 +6,12 @@ import com.company.invoiceservice.model.Invoice;
 import com.company.invoiceservice.model.InvoiceItem;
 import com.company.invoiceservice.model.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class InvoiceServiceLayer {
 
     InvoiceDaoImpl invoiceDao;

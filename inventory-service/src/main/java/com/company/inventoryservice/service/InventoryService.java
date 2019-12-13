@@ -2,6 +2,7 @@ package com.company.inventoryservice.service;
 
 import com.company.inventoryservice.dao.InventoryDaoImpl;
 import com.company.inventoryservice.model.Inventory;
+import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +11,12 @@ import java.util.List;
 @Service
 public class InventoryService {
 
-    @Autowired
     InventoryDaoImpl dao;
+
+    @Autowired
+    public InventoryService(InventoryDaoImpl dao) {
+        this.dao = dao;
+    }
 
     public Inventory addInventory(Inventory inventory) throws Exception {
         try {
