@@ -2,6 +2,8 @@ package com.company.retailapiservice.service;
 
 import com.company.retailapiservice.feign.*;
 import com.company.retailapiservice.model.*;
+import com.company.retailapiservice.util.message.LevelUpEntry;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class RetailAPIService {
+
+    public static final String EXCHANGE = "level-up-exchange";
+    public static final String ROUTING_KEY = "levelup.list.add.controller";
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Autowired
     InvoiceServiceFeign invoiceFeign;
@@ -95,6 +103,12 @@ public class RetailAPIService {
                     inventory.setQuantity(inventory.getQuantity() - numProducts);
                     inventoryFeign.updateInventory(inventory);
                 });
+
+        // TODO: send level up points to db via queue
+        LevelUpEntry msg = new LevelUpEntry();
+        msg.setCustomerId(invoiceViewModelWithPoints.getCustomerId());
+        msg.setPoints(points);
+        rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, msg);
 
         return invoiceViewModelWithPoints;
     }
