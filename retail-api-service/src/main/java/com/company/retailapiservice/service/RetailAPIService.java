@@ -71,7 +71,7 @@ public class RetailAPIService {
         }
 
         // get total price of invoice (sum of all unit prices in invoice items)
-        // quantity * unit price of each inventoryitem
+        // quantity * unit price of each inventory item
         List<InvoiceItem> invoiceItemList = invoiceViewModel.getInvoiceItems();
         List<BigDecimal> priceList = invoiceItemList.stream()
                 .map(invoiceItem -> invoiceItem.getUnitPrice().multiply(new BigDecimal(invoiceItem.getQuantity())))
@@ -104,7 +104,7 @@ public class RetailAPIService {
                     inventoryFeign.updateInventory(inventory);
                 });
 
-        // TODO: send level up points to db via queue
+        // build message to send to queue, route to consumer (level-up-service)
         LevelUpEntry msg = new LevelUpEntry();
         msg.setCustomerId(invoiceViewModelWithPoints.getCustomerId());
         msg.setPoints(points);
