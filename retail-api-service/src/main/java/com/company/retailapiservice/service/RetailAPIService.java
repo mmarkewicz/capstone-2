@@ -71,6 +71,7 @@ public class RetailAPIService {
         List<BigDecimal> priceList = invoiceItemList.stream()
                 .map(invoiceItem -> invoiceItem.getUnitPrice().multiply(new BigDecimal(invoiceItem.getQuantity())))
                 .collect(Collectors.toList());
+
         BigDecimal total = new BigDecimal(0);
 
         for (BigDecimal price : priceList) {
