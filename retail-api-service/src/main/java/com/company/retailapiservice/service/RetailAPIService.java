@@ -3,6 +3,7 @@ package com.company.retailapiservice.service;
 import com.company.retailapiservice.feign.*;
 import com.company.retailapiservice.model.*;
 import com.company.retailapiservice.util.message.LevelUpEntry;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -138,9 +139,14 @@ public class RetailAPIService {
         return productList;
     }
 
+    @HystrixCommand(fallbackMethod = "fallback")
     public int getLevelUpPointsByCustomerId(int id) {
         List<LevelUp> levelUps = levelUpFeign.getAllLevelUps().stream().filter(levelUp -> levelUp.getCustomer_id() == id).collect(Collectors.toList());
         return levelUps.get(0).getPoints();
+    }
+
+    public int fallback(int id) {
+        return 0;
     }
 
     private InvoiceViewModelWithPoints buildInvoiceViewModelWithPoints(InvoiceViewModel invoiceViewModel, int points, BigDecimal total) {
