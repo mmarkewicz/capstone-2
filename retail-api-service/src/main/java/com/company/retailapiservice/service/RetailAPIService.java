@@ -82,13 +82,7 @@ public class RetailAPIService {
 
         invoiceViewModel = invoiceFeign.postInvoice(invoiceViewModel);
 
-        InvoiceViewModelWithPoints invoiceViewModelWithPoints = new InvoiceViewModelWithPoints();
-        invoiceViewModelWithPoints.setId(invoiceViewModel.getId());
-        invoiceViewModelWithPoints.setCustomerId(invoiceViewModel.getCustomerId());
-        invoiceViewModelWithPoints.setInvoiceItems(invoiceViewModel.getInvoiceItems());
-        invoiceViewModelWithPoints.setPurchaseDate(invoiceViewModel.getPurchaseDate());
-        invoiceViewModelWithPoints.setLevelUpPoints(points);
-        invoiceViewModelWithPoints.setTotal(total);
+        InvoiceViewModelWithPoints invoiceViewModelWithPoints = buildInvoiceViewModelWithPoints(invoiceViewModel, points, total);
 
         invoiceViewModel.getInvoiceItems().stream()
                 .forEach(invoiceItem -> {
@@ -147,5 +141,16 @@ public class RetailAPIService {
     public int getLevelUpPointsByCustomerId(int id) {
         List<LevelUp> levelUps = levelUpFeign.getAllLevelUps().stream().filter(levelUp -> levelUp.getCustomer_id() == id).collect(Collectors.toList());
         return levelUps.get(0).getPoints();
+    }
+
+    private InvoiceViewModelWithPoints buildInvoiceViewModelWithPoints(InvoiceViewModel invoiceViewModel, int points, BigDecimal total) {
+        InvoiceViewModelWithPoints invoiceViewModelWithPoints = new InvoiceViewModelWithPoints();
+        invoiceViewModelWithPoints.setId(invoiceViewModel.getId());
+        invoiceViewModelWithPoints.setCustomerId(invoiceViewModel.getCustomerId());
+        invoiceViewModelWithPoints.setInvoiceItems(invoiceViewModel.getInvoiceItems());
+        invoiceViewModelWithPoints.setPurchaseDate(invoiceViewModel.getPurchaseDate());
+        invoiceViewModelWithPoints.setLevelUpPoints(points);
+        invoiceViewModelWithPoints.setTotal(total);
+        return invoiceViewModelWithPoints;
     }
 }
