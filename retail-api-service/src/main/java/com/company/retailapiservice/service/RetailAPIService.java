@@ -20,7 +20,7 @@ public class RetailAPIService {
     public static final String ROUTING_KEY = "levelup.list.add.controller";
 
     @Autowired
-    private RabbitTemplate rabbitTemplate;
+    RabbitTemplate rabbitTemplate;
 
     @Autowired
     InvoiceServiceFeign invoiceFeign;
@@ -39,14 +39,12 @@ public class RetailAPIService {
 
     public InvoiceViewModelWithPoints addInvoice(InvoiceViewModel invoiceViewModel) throws Exception {
 
-        // order must contain a valid customer
         try {
             customerFeign.fetchCustomerById(invoiceViewModel.getCustomerId());
         } catch (Exception e) {
             throw new Exception("That is not a valid customer ID");
         }
 
-        // order must contain valid products
         try {
             invoiceViewModel.getInvoiceItems().stream()
                     .forEach(invoiceItem -> inventoryFeign.getInventoryById(invoiceItem.getInventory_id()));
@@ -56,7 +54,6 @@ public class RetailAPIService {
 
         AtomicBoolean isQuantityValid = new AtomicBoolean(true);
 
-        // order quantity must be greater than 0 and less than or equal to the number of items in each inventory
         invoiceViewModel.getInvoiceItems().stream()
                 .forEach(invoiceItem -> {
                     Inventory inventory = inventoryFeign.getInventoryById(invoiceItem.getInventory_id());
@@ -70,8 +67,6 @@ public class RetailAPIService {
             throw new Exception("The quantity requested is not available");
         }
 
-        // get total price of invoice (sum of all unit prices in invoice items)
-        // quantity * unit price of each inventory item
         List<InvoiceItem> invoiceItemList = invoiceViewModel.getInvoiceItems();
         List<BigDecimal> priceList = invoiceItemList.stream()
                 .map(invoiceItem -> invoiceItem.getUnitPrice().multiply(new BigDecimal(invoiceItem.getQuantity())))
@@ -82,7 +77,6 @@ public class RetailAPIService {
             total = total.add(price);
         }
 
-        // (total price % 50) * 10 is total number of level up points that will be added
         int points = total.divide(new BigDecimal(50)).setScale(2, RoundingMode.DOWN).multiply(new BigDecimal(10)).setScale(2, RoundingMode.DOWN).toBigInteger().intValue();
 
         invoiceViewModel = invoiceFeign.postInvoice(invoiceViewModel);
@@ -95,7 +89,6 @@ public class RetailAPIService {
         invoiceViewModelWithPoints.setLevelUpPoints(points);
         invoiceViewModelWithPoints.setTotal(total);
 
-        // decrease number of products if successful order is placed
         invoiceViewModel.getInvoiceItems().stream()
                 .forEach(invoiceItem -> {
                     int numProducts = invoiceItem.getQuantity();
@@ -104,7 +97,6 @@ public class RetailAPIService {
                     inventoryFeign.updateInventory(inventory);
                 });
 
-        // build message to send to queue, route to consumer (level-up-service)
         LevelUpEntry msg = new LevelUpEntry();
         msg.setCustomerId(invoiceViewModelWithPoints.getCustomerId());
         msg.setPoints(points);
@@ -135,19 +127,15 @@ public class RetailAPIService {
 
     public List<Product> getProductsByInvoiceId(int id) {
 
-        // get all invoice items
         List<InvoiceItem> invoiceItems = invoiceFeign.getInvoiceById(id).getInvoiceItems();
 
-        // get all inventory ids from invoice items
         List<Integer> inventoryIds = invoiceItems.stream()
                 .map(invoiceItem -> invoiceItem.getInventory_id())
                 .collect(Collectors.toList());
 
-        // get all inventories
         List<Inventory> inventoryList = inventoryIds.stream()
                 .map(integer -> inventoryFeign.getInventoryById(integer)).collect(Collectors.toList());
 
-        // use product id from inventories to get all products
         List<Product> productList = inventoryList.stream()
                 .map(inventory -> productFeign.fetchProductById(inventory.getProductId()))
                 .collect(Collectors.toList());
