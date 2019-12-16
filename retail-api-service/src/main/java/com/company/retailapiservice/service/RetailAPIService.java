@@ -20,23 +20,22 @@ public class RetailAPIService {
     public static final String EXCHANGE = "level-up-exchange";
     public static final String ROUTING_KEY = "levelup.list.add.controller";
 
-    @Autowired
     RabbitTemplate rabbitTemplate;
-
-    @Autowired
     InvoiceServiceFeign invoiceFeign;
-
-    @Autowired
     ProductServiceFeign productFeign;
-
-    @Autowired
     LevelUpServiceFeign levelUpFeign;
-
-    @Autowired
     InventoryServiceFeign inventoryFeign;
+    CustomerServiceFeign customerFeign;
 
     @Autowired
-    CustomerServiceFeign customerFeign;
+    public RetailAPIService(RabbitTemplate rabbitTemplate, InvoiceServiceFeign invoiceFeign, ProductServiceFeign productFeign, LevelUpServiceFeign levelUpFeign, InventoryServiceFeign inventoryFeign, CustomerServiceFeign customerFeign) {
+        this.rabbitTemplate = rabbitTemplate;
+        this.invoiceFeign = invoiceFeign;
+        this.productFeign = productFeign;
+        this.levelUpFeign = levelUpFeign;
+        this.inventoryFeign = inventoryFeign;
+        this.customerFeign = customerFeign;
+    }
 
     public InvoiceViewModelWithPoints addInvoice(InvoiceViewModel invoiceViewModel) throws Exception {
 
@@ -79,7 +78,7 @@ public class RetailAPIService {
             total = total.add(price);
         }
 
-        int points = total.divide(new BigDecimal(50)).setScale(2, RoundingMode.DOWN).multiply(new BigDecimal(10)).setScale(2, RoundingMode.DOWN).toBigInteger().intValue();
+        int points = total.divide(new BigDecimal(50)).setScale(2, RoundingMode.UP).multiply(new BigDecimal(10)).setScale(2, RoundingMode.UP).toBigInteger().intValue();
 
         invoiceViewModel = invoiceFeign.postInvoice(invoiceViewModel);
 

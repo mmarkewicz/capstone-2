@@ -2,4 +2,4 @@
 
 ### TODO
 - Swagger for each service
-- Fix level up rounding to multiple of 10s
+- Retail API testing
