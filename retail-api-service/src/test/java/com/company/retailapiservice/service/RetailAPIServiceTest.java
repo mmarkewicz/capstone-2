@@ -40,6 +40,16 @@ public class RetailAPIServiceTest {
     }
 
     private void setUpMocks() {
-
+        // customerfeign.fetchcustomerbyid()
+        // inventoryfeign.getinventorybyid()
+        // inventoryfeign.updateinventory()
+        // invoicefeign.getinvoicebyid()
+        // invoicefeign.getallinvoices()
+        // invoicefeign.getinvoicesbycustomerid()
+        // invoicefeign.postinvoice()
+        // productfeign.fetchallproducts()
+        // productfeign.fetchproductbyid()
+        // levelupfeign.getalllevelups()
+        // rabbittemplate.convertandsend()
     }
 }
