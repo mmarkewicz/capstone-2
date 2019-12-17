@@ -1,5 +1,6 @@
 package com.company.invoiceservice.controller;
 
+import com.company.invoiceservice.model.Invoice;
 import com.company.invoiceservice.model.InvoiceItem;
 import com.company.invoiceservice.model.InvoiceViewModel;
 import com.company.invoiceservice.service.InvoiceServiceLayer;
@@ -111,6 +112,7 @@ public class InvoiceControllerTest {
 
         this.mockMvc.perform(post("/invoices")
         .content(requestJson)
+                .content(requestJson)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8"))
@@ -178,5 +180,5 @@ public class InvoiceControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString(json)));
     }
-    // get /invoices/customer/{customerId}
+
 }

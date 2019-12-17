@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+
 @CacheConfig(cacheNames = "inventories")
 public class InventoryController {
 
@@ -24,6 +25,7 @@ public class InventoryController {
     public List<Inventory> getAllInventories() throws Exception {
         return service.getAllInventories();
     }
+
 
     @Cacheable
     @GetMapping("/inventory/{id}")

@@ -18,6 +18,7 @@ public class InvoiceController {
     @Autowired
     InvoiceServiceLayer service;
 
+
     @CachePut(key = "#result.getId()")
     @PostMapping("/invoices")
     @ResponseStatus(value = HttpStatus.CREATED)
