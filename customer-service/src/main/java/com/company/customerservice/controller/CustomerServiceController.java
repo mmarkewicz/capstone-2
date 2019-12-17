@@ -40,7 +40,7 @@ public class CustomerServiceController {
 
     @RequestMapping(value = "/customers/{customerId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateCustomer(@PathVariable int customerId){
+    public void deleteCustomer(@PathVariable int customerId){
         customerService.deleteCustomer(customerId);
     }
 

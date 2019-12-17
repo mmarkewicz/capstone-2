@@ -10,27 +10,51 @@ import java.util.List;
 @Service
 public class LevelUpServiceLayer {
 
-    @Autowired
     LevelUpDaoImpl dao;
 
-    public List<LevelUp> getAllLevelUps() {
-        return dao.getAllLevelUps();
+    @Autowired
+    public LevelUpServiceLayer(LevelUpDaoImpl dao) {
+        this.dao = dao;
     }
 
-    public LevelUp getLevelUpById(int id) {
-        return dao.getLevelUp(id);
+    public List<LevelUp> getAllLevelUps() throws Exception {
+        try {
+            return dao.getAllLevelUps();
+        } catch (Exception e) {
+            throw new Exception("Could not get all level ups");
+        }
     }
 
-    public LevelUp addLevelUp(LevelUp levelUp) {
-        return dao.addLevelUp(levelUp);
+    public LevelUp getLevelUpById(int id) throws Exception {
+        try {
+            return dao.getLevelUp(id);
+        } catch (Exception e) {
+            throw new Exception("Could not get level up by ID");
+        }
     }
 
-    public void updateLevelUp(LevelUp levelUp) {
-        dao.updateLevelUp(levelUp);
+    public LevelUp addLevelUp(LevelUp levelUp) throws Exception {
+        try {
+            return dao.addLevelUp(levelUp);
+        } catch (Exception e) {
+            throw new Exception("Could not add level up");
+        }
     }
 
-    public void deleteLevelUp(int id) {
-        dao.deleteLevelUp(id);
+    public void updateLevelUp(LevelUp levelUp) throws Exception {
+        try {
+            dao.updateLevelUp(levelUp);
+        } catch (Exception e) {
+            throw new Exception("Could not update level up");
+        }
+    }
+
+    public void deleteLevelUp(int id) throws Exception {
+        try {
+            dao.deleteLevelUp(id);
+        } catch (Exception e) {
+            throw new Exception("Could not delete level up");
+        }
     }
 
 }
