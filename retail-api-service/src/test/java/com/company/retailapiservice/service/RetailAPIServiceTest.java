@@ -53,7 +53,7 @@ public class RetailAPIServiceTest {
     }
 
     @Test
-    public void shouldReturnInvoiceViewModelFromAddInvoice() {
+    public void shouldReturnInvoiceViewModelFromAddInvoice() throws Exception {
         InvoiceItem invoiceItem = new InvoiceItem();
         invoiceItem.setQuantity(10);
         invoiceItem.setUnitPrice(new BigDecimal(10.00).setScale(2, RoundingMode.HALF_EVEN));
@@ -67,9 +67,23 @@ public class RetailAPIServiceTest {
         invoiceViewModel.setCustomerId(1);
         invoiceViewModel.setPurchaseDate(LocalDate.of(2019, 1, 1));
 
+        InvoiceItem invoiceItemWithId = new InvoiceItem();
+        invoiceItemWithId.setQuantity(10);
+        invoiceItemWithId.setUnitPrice(new BigDecimal(10.00).setScale(2, RoundingMode.HALF_EVEN));
+        invoiceItemWithId.setInventory_id(1);
+        invoiceItemWithId.setInvoiceId(1);
+        invoiceItemWithId.setId(1);
+
+        List<InvoiceItem> invoiceItemsWithIds = new ArrayList<>();
+        invoiceItemsWithIds.add(invoiceItemWithId);
+
         InvoiceViewModel invoiceViewModelWithId = new InvoiceViewModel();
-        invoiceViewModel.set
-        assertEquals(service.addInvoice(invoic))
+        invoiceViewModelWithId.setInvoiceItems(invoiceItemsWithIds);
+        invoiceViewModelWithId.setCustomerId(1);
+        invoiceViewModelWithId.setPurchaseDate(LocalDate.of(2019, 1, 1));
+        invoiceViewModelWithId.setId(1);
+
+        assertEquals(service.addInvoice(invoiceViewModel).toString(), invoiceViewModelWithId.toString());
     }
 
     @Test
