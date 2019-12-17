@@ -6,11 +6,13 @@ import com.company.invoiceservice.model.Invoice;
 import com.company.invoiceservice.model.InvoiceItem;
 import com.company.invoiceservice.model.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 @Service
 public class InvoiceServiceLayer {
 

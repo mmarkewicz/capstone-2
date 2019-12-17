@@ -1,6 +1,5 @@
 package com.company.productservice.service;
 
-import com.company.productservice.ProductService;
 import com.company.productservice.dao.ProductDao;
 import com.company.productservice.model.Product;
 import org.junit.Before;

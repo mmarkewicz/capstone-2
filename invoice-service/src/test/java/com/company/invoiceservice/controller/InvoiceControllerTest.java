@@ -111,6 +111,7 @@ public class InvoiceControllerTest {
         String responseJson = mapper.writeValueAsString(responseInvoiceViewModel);
 
         this.mockMvc.perform(post("/invoices")
+        .content(requestJson)
                 .content(requestJson)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
