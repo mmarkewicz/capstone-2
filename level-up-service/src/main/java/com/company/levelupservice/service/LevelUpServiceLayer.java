@@ -2,6 +2,7 @@ package com.company.levelupservice.service;
 
 import com.company.levelupservice.dao.LevelUpDaoImpl;
 import com.company.levelupservice.model.LevelUp;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class LevelUpServiceLayer {
         this.dao = dao;
     }
 
+    @HystrixCommand(fallbackMethod = "fallback")
     public List<LevelUp> getAllLevelUps() throws Exception {
         try {
             return dao.getAllLevelUps();
@@ -25,6 +27,7 @@ public class LevelUpServiceLayer {
         }
     }
 
+    @HystrixCommand(fallbackMethod = "fallback")
     public LevelUp getLevelUpById(int id) throws Exception {
         try {
             return dao.getLevelUp(id);
@@ -57,4 +60,7 @@ public class LevelUpServiceLayer {
         }
     }
 
+    public String fallback() {
+        return "Service is down please try again later";
+    }
 }
